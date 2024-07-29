@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycle Rush</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e3a8a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #2c4a9a;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .level-display {
+            background-color: #3b4f81;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .clickable-area {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: #4ade80;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+            font-size: 3em;
+        }
+        .clickable-area:active {
+            transform: scale(0.95);
+        }
+        .stats {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .nav-item {
+            padding: 10px;
+            background-color: #3b82f6;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            background-color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="level-display">
+            <h2>Nivel: <span id="playerLevel">1</span></h2>
+        </div>
+        <div class="header">
+            <h2>Créditos: <span id="credits">0</span></h2>
+        </div>
+        <div id="clickerArea" class="clickable-area">♻️</div>
+        <div class="stats">
+            <div>Créditos por click: <span id="creditsPerClick">1</span></div>
+            <div>Créditos por segundo: <span id="creditsPerSecond">0</span></div>
+        </div>
+        <div class="bottom-nav">
+            <div class="nav-item active">Ganar</div>
+            <div class="nav-item">Mejorar</div>
+            <div class="nav-item">Ciudad</div>
+            <div class="nav-item">Amiguis</div>
+            <div class="nav-item">Misiones</div>
+        </div>
+    </div>
+
+    <script>
+        let credits = 0;
+        let creditsPerClick = 1;
+        let creditsPerSecond = 0;
+        let playerLevel = 1;
+
+        function updateCredits() {
+            document.getElementById('credits').textContent = Math.floor(credits);
+            document.getElementById('creditsPerClick').textContent = creditsPerClick;
+            document.getElementById('creditsPerSecond').textContent = creditsPerSecond;
+            updatePlayerLevel();
+        }
+
+        function updatePlayerLevel() {
+            playerLevel = Math.floor(Math.log2(creditsPerSecond + 1)) + 1;
+            document.getElementById('playerLevel').textContent = playerLevel;
+        }
+
+        document.getElementById('clickerArea').addEventListener('click', function() {
+            credits += creditsPerClick;
+            updateCredits();
+        });
+
+        // Inicialización
+        updateCredits();
+
+        // Incremento pasivo de créditos
+        setInterval(() => {
+            credits += creditsPerSecond;
+            updateCredits();
+        }, 1000);
+    </script>
+</body>
+</html>
